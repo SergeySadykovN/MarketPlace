@@ -14,19 +14,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+# myshop/urls.py
 from django.contrib import admin
-from django.urls import path
-from rest_framework.routers import SimpleRouter
 
-from orders.views import orders_page, main_page, OrderView
-
-router = SimpleRouter()
-router.register('api/orders', OrderView)
+from django.urls import path, include
+from orders.views import main_page, orders_page
+from products.views import product_list
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main_page),
-    path('orders/', orders_page),
+    path('', main_page, name='main_page'),
+    path('orders/', orders_page, name='orders_page'),
+    path('cart/', include('cart.urls')),  # Включаем маршруты для корзины
+    path('products/', product_list, name='product_list'),
 ]
-
-urlpatterns += router.urls
